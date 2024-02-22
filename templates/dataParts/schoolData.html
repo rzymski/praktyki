@@ -1,0 +1,20 @@
+<div>
+    <h5 class="informationGroupTitle">Dane szkoły:</h5>
+    <ul class="list-group">
+        {% if school.name %}
+            <li class="list-group-item"><span class="informationData">Nazwa szkoły: </span>{{ school.name }}</li>
+        {% endif %}
+        {% if school.street %}
+            <li class="list-group-item"><span class="informationData">Ulica: </span>{{ school.street }}</li>
+        {% endif %}
+        {% if school.schoolNumber %}
+            <li class="list-group-item"><span class="informationData">Numer szkoły: </span>{{ school.schoolNumber }}</li>
+        {% endif %}
+        {% if school.zipCode %}
+            <li class="list-group-item"><span class="informationData">Kod zip: </span>{{ school.zipCode }}</li>
+        {% endif %}
+        {% if school.town %}
+            <li class="list-group-item"><span class="informationData">Miasto: </span>{{ school.town }}</li>
+        {% endif %}
+    </ul>
+</div>

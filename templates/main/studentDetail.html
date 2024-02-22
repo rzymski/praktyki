@@ -1,0 +1,285 @@
+{% extends 'partials/base.html' %}
+{% load myFilters %}
+{% block title %}Dane ucznia{% endblock %}
+{% block content %}
+    <h1 style="text-align: center">{{ student.name }} {{ student.surname }}</h1>
+    <div class="card mx-4">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="personalDataTab" aria-controls="personalDataContent" role="tab" data-bs-toggle="tab" href="#personalDataContent">Dane osobowe i kontaktowe</a></li>
+                <li class="nav-item"><a class="nav-link" id="parentsDataTab" aria-controls="parentsDataContent" role="tab" data-bs-toggle="tab" href="#parentsDataContent">Dane rodziców</a></li>
+                <li class="nav-item"><a class="nav-link" id="examsDataTab" aria-controls="examsDataContent" role="tab" data-bs-toggle="tab" href="#examsDataContent">Wyniki egzaminów</a></li>
+                <li class="nav-item"><a class="nav-link" id="gradesDataTab" aria-controls="gradesDataContent" role="tab" data-bs-toggle="tab" href="#gradesDataContent">Oceny</a></li>
+                <li class="nav-item"><a class="nav-link" id="attendanceDataTab" aria-controls="attendanceDataContent" role="tab" data-bs-toggle="tab" href="#attendanceDataContent">Obecności</a></li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="personalDataContent">
+                    <div class="row m-0">
+                        <div class="col-md-6 px-0">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="mainDataTab" aria-controls="mainDataContent" role="tab" data-bs-toggle="tab" href="#mainDataContent">Aktualne główne dane</a>
+                                        </li>
+                                        {% if studentArchive %}
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Archiwalne główne dane</a>
+                                                <ul class="dropdown-menu">
+                                                    {% for archive in studentArchive %}
+                                                        <li><a class="dropdown-item" id="archiveDataTab{{ forloop.counter }}" aria-controls="archiveDataContent{{ forloop.counter }}" role="tab" data-bs-toggle="tab" href="#archiveDataContent{{ forloop.counter }}">{{ forloop.counter }}. {% if archive.actualizationDate %}{{ archive.actualizationDate|myDateFormat }}{% endif %}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="mainDataContent">
+                                            {% include 'dataParts/studentMainData.html' %}
+                                            {% include 'dataParts/decisionsDiseasesDisciplonaryNotesData.html' %}
+                                        </div>
+                                        {% if studentArchive %}
+                                            {% for archive in studentArchive %}
+                                                <div class="tab-pane fade" id="archiveDataContent{{ forloop.counter }}">
+                                                    {% include 'dataParts/studentArchiveMainData.html' with studentArchive=archive %}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 px-0">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="detailsDataTab" aria-controls="detailsDataContent" role="tab" data-bs-toggle="tab" href="#detailsDataContent">Dane dodatkowe</a>
+                                        </li>
+                                        {% if detailsArchive %}
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Archiwalne dodatkowe dane</a>
+                                                <ul class="dropdown-menu">
+                                                    {% for archive in detailsArchive %}
+                                                        <li><a class="dropdown-item" id="archiveDetailsDataTab{{ forloop.counter }}" aria-controls="archiveDetailsDataContent{{ forloop.counter }}" role="tab" data-bs-toggle="tab" href="#archiveDetailsDataContent{{ forloop.counter }}">{{ forloop.counter }}. {% if archive.actualizationDate %}{{ archive.actualizationDate|myDateFormat }}{% endif %}</a></li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="detailsDataContent">
+                                            {% include 'dataParts/studentContactData.html' %}
+                                            <div class="mt-2">{% include 'dataParts/studentAbodeData.html' %}</div>
+                                            <div class="mt-2">{% include 'dataParts/studentBirthData.html' %}</div>
+                                            <div class="mt-2">{% include 'dataParts/studentOtherData.html' %}</div>
+                                            {% if details.actualizationDate %}
+                                                <li class="list-group-item"><span class="informationData">Data aktualizacji danych: </span>{{ details.actualizationDate|myDateFormat }}</li>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% if detailsArchive %}
+                                        <div class="tab-content">
+                                            {% for detailArchive in detailsArchive %}
+                                                <div class="tab-pane fade" id="archiveDetailsDataContent{{ forloop.counter }}">
+                                                    {% include 'dataParts/studentContactData.html' with details=detailArchive %}
+                                                    <div class="mt-2">{% include 'dataParts/studentAbodeData.html' with details=detailArchive %}</div>
+                                                    <div class="mt-2">{% include 'dataParts/studentBirthData.html' with details=detailArchive %}</div>
+                                                    <div class="mt-2">{% include 'dataParts/studentOtherData.html' with details=detailArchive %}</div>
+                                                    {% if detailArchive.actualizationDate %}
+                                                        <li class="list-group-item"><span class="informationData">Data aktualizacji danych: </span>{{ detailArchive.actualizationDate|myDateFormat }}</li>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="tab-pane fade" id="parentsDataContent">
+                    <div class="row m-0">
+                        <div class="col-md-6 px-0">
+                            <div class="card">
+                                <div class="card-body">
+                                    {% include 'dataParts/motherData.html' %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 px-0">
+                            <div class="card">
+                                <div class="card-body">
+                                    {% include 'dataParts/fatherData.html' %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="tab-pane fade" id="examsDataContent">
+                    <div class="row m-0">
+                        {% for juniorExam in juniorExams %}
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        {% include 'dataParts/juniorExamData.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div>
+                                            <canvas width="100%" height="100%" style="max-height: 900px" id="juniorExamChart{{ forloop.counter }}"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for class8Exam in class8Exams %}
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        {% include 'dataParts/class8ExamData.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div>
+                                            <canvas width="100%" height="100%" style="max-height: 900px" id="class8ExamChart{{ forloop.counter }}"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for professionExam in professionExams %}
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        {% include 'dataParts/professionExamData.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div>
+                                            <canvas width="100%" height="100%" style="max-height: 900px" id="professionExamChart{{ forloop.counter }}"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for matura in maturaExams %}
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        {% include 'dataParts/maturaData.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 px-0">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div>
+                                            <canvas width="100%" height="100%" style="max-height: 900px" id="maturaExamChart{{ forloop.counter }}"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            
+                <div class="tab-pane fade" id="gradesDataContent">
+                    <div class="row m-0">
+                        <div class="col-md-12 px-0">
+                            <div class="card">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="gradesListTab" aria-controls="gradesDataContent" role="tab" data-bs-toggle="tab" href="#gradesListDataContent">Lista ocen</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link item" id="gradesTableTab" aria-controls="gradesDataContent" role="tab" data-bs-toggle="tab" href="#gradesTableDataContent">Tabela z ocenami</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="gradesListDataContent">
+                                            <div class="row m-0">
+                                                {% regroup gradesQuery by semester as semester_list %}
+                                                {% for semester in semester_list %}
+                                                    <div class="col-md-6 px-0">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                {% include 'dataParts/gradesListData.html' %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="gradesTableDataContent">
+                                            {% include 'dataParts/gradesTable.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="tab-pane fade" id="attendanceDataContent">
+					<div class="row m-0">
+						<div class="col-md-12 px-0">
+							<div class="card">
+								<div class="card-header">
+									<ul class="nav nav-tabs card-header-tabs" role="tablist">
+										<li class="nav-item">
+											<a class="nav-link active" id="attendanceListTab" aria-controls="attendanceDataContent" role="tab" data-bs-toggle="tab" href="#attendanceListDataContent">Lista obecności</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link item" id="attendanceTableTab" aria-controls="attendanceDataContent" role="tab" data-bs-toggle="tab" href="#attendanceTableDataContent">Tabela z obecnościami</a>
+										</li>
+									</ul>
+								</div>
+								<div class="card-body">
+									<div class="tab-content">
+										<div class="tab-pane fade show active" id="attendanceListDataContent">
+											<div class="row m-0">
+                                                {% for a in attendance %}
+                                                <div class="col-md-6 px-0">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            {% include 'dataParts/attendanceData.html' with semester=forloop.counter %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+											</div>
+										</div>
+										<div class="tab-pane fade" id="attendanceTableDataContent">
+											{% include 'dataParts/attendanceTable.html' %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

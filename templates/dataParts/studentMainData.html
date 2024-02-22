@@ -1,0 +1,36 @@
+{% load myFilters %}
+<div>
+    <h5 class="informationGroupTitle">Główne dane studenta:</h5>
+    <ul class="list-group">
+        {% if student.index %}
+            <li class="list-group-item"><span class="informationData">Index: </span>{{ student.index }}</li>
+        {% endif %}
+        {% if student.pesel %}
+            <li class="list-group-item"><span class="informationData">Pesel: </span>{{ student.pesel }}</li>
+        {% endif %}
+        {% if student.name %}
+            <li class="list-group-item"><span class="informationData">Imie: </span>{{ student.name }}</li>
+        {% endif %}
+        {% if student.secondName %}
+            <li class="list-group-item"><span class="informationData">Drugie imie: </span>{{ student.secondName }}</li>
+        {% endif %}
+        {% if student.surname %}
+            <li class="list-group-item"><span class="informationData">Nazwisko: </span>{{ student.surname }}</li>
+        {% endif %}
+        {% if student.sex %}
+            <li class="list-group-item"><span class="informationData">Płeć: </span>{% if student.sex == 'M' %} Mężczyzna {% elif student.sex == 'K' %} Kobieta {% endif %}</li>
+        {% endif %}
+        {% if student.status %}
+            <li class="list-group-item"><span class="informationData">Status: </span>{{ student.status }}</li>
+        {% endif %}
+        {% if student.specialization %}
+            <li class="list-group-item"><span class="informationData">Specjalizacja: </span>{{ student.specialization }}</li>
+        {% endif %}
+        {% if schoolClass.actualClass %}
+            <li class="list-group-item"><span class="informationData">Aktualna klasa: </span>{{ schoolClass.actualClass }}</li>
+        {% endif %}
+    </ul>
+    {% if student.actualizationDate %}
+        <li class="list-group-item"><span class="informationData">Data aktualizacji danych: </span>{{ student.actualizationDate|myDateFormat }}</li>
+    {% endif %}
+</div>

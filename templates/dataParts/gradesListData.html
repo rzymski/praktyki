@@ -1,0 +1,15 @@
+<div>
+    <h5 class="informationGroupTitle">Semestr {{ semester.grouper }}</h5>
+    <ul class="list-group">
+        {% for grade in semester.list %}
+            <li class="list-group-item"><span class="informationData">{{ grade.gradesubjectleader__subject__name }} </span><span> {{ grade.gradeValue }}</span></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{#<h2>Semestr {{ semester.grouper }}</h2>#}
+{#<ul>#}
+{#    {% for grade in semester.list %}#}
+{#        <li><span>Ocena {{ grade.gradeValue }} z {{ grade.gradesubjectleader__subject__name }} była {{ grade.count }} razy</span></li>#}
+{#    {% endfor %}#}
+{#</ul>#}

@@ -1,0 +1,61 @@
+{% extends 'partials/base.html' %}
+{% block title %}Lista nauczycieli{% endblock %}
+{% block content %}
+    <div>
+        <body>
+            <br>
+            <div style="width: 95%; margin: auto">
+                <table id="teacherListTable" class="display cell-border" style="width: 100%; text-align: center">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nazwisko</th>
+                            <th>Imie</th>
+                            <th>Liczba wystawionych ocen</th>
+                            <th>Średnia wystawionych ocen</th>
+                            <th>Pedagog/Psycholog</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in teachers %}
+                            <tr class="clickable-row" data-href="{% url 'teacherDetail' data.id.id%}">
+                                <td>{{ data.id.id }}</td>
+                                <td>{{ data.surname }}</td>
+                                <td>{{ data.name }} {% if data.secondName %} {{ data.secondName }} {% endif %}</td>
+                            
+                                <td>{{ data.countGrade }}</td>
+                            
+                                <td>{% if data.averageGrade %}{{ data.averageGrade|floatformat:3 }}{% endif %}</td>
+                            
+                                {% if data.pedagogue %}
+                                    <td>TAK</td>
+                                {% else %}
+                                    <td>NIE</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="6" style="text-align: center"></th>
+                        </tr>
+                        <tr>
+                            <th colspan="6" style="text-align: center"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </body>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll(".clickable-row");
+            rows.forEach(function (row) {
+                row.addEventListener("click", function () {
+                    const url = row.getAttribute("data-href");
+                    window.location.href = url;
+                });
+            });
+        });
+    </script>
+{% endblock %}

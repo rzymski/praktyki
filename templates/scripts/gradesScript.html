@@ -1,0 +1,81 @@
+<script>
+	$(document).ready(function() {
+		let gradesTable = $('#gradesTable').DataTable({
+			tableId: 'gradesTable',
+			paging: true,
+			pageLength: -1,
+			lengthChange: true,
+			lengthMenu: [[10, 20, 25, 50, 100, -1], [10, 20, 25, 50, 100, 'Wszystkie']],
+			autoWidth: true,
+			searching: true,
+			bInfo: true,
+			bSort: true,
+			orderCellsTop: true,
+			dom: 'lrftip',
+			language: {
+				lengthMenu: "Pokaż _MENU_ rekordy",
+				search: "Wyszukiwarka: ",
+				searchPlaceholder: "Szukaj rekordu",
+				paginate: {
+					previous: "Poprzednia ",
+					next: "Następna"
+				},
+				info: "Pokazuje _START_ do _END_ z _TOTAL_ rekordów",
+				infoFiltered: " (wyfiltrowano z _MAX_ wszystkich rekordów)",
+				zeroRecords: "Brak pasującyh rekordów.",
+				infoEmpty: "Nie znaleziono żadny pasującyh rekordów.",
+			},
+			initComplete: function () {
+				let api = this.api();
+				api.columns([0, 1, 2, 9]).eq(0).each(function (colIdx) {
+					let cell = $('#gradesTable thead tr:eq(1) th').eq(colIdx);
+					$(
+						'input',
+						$('#gradesTable thead tr:eq(1) th').eq(colIdx)
+					)
+						.off('keyup change')
+						.on('keyup change', function (e) {
+							e.stopPropagation();
+							$(this).attr('title', $(this).val());
+							let searchTerm = this.value.trim();
+							api.column(colIdx).search(searchTerm, false, false).draw();
+						});
+				});
+			},
+            
+            footerCallback: function (row, data, start, end, display) {
+				let api = this.api();
+				let intVal = function (i) {
+					return typeof i === 'string'
+						? i.replace(/[\$,]/g, '') * 1
+						: typeof i === 'number'
+						? i
+						: 0;
+				};
+				let averageValues = api.column(9).data();
+				if (averageValues.length === 0) { return; }
+				let averageSum = 0;
+				for (let i = 0; i < averageValues.length; i++) {
+					let average = intVal(averageValues[i]);
+					averageSum += average;
+				}
+				let average = averageSum / averageValues.length;
+				let pageAverageValues = api.column(9, { page: 'current' }).data();
+				let pageAverageSum = 0;
+				for (let i = 0; i < pageAverageValues.length; i++) {
+					let pageAverage = intVal(pageAverageValues[i]);
+					pageAverageSum += pageAverage;
+				}
+				let pageResult = ''
+				let pageAverage;
+				if (pageAverageValues.length !== 0) {
+					pageAverage = pageAverageSum / pageAverageValues.length;
+					pageResult = `Średnia wybranych średnich ocen: ${pageAverage.toFixed(3)}`
+				}
+				let footerContent = `${pageResult} (Średnia wszystkich średnich ocen: ${average.toFixed(3)})`;
+				$(api.column(0).footer()).html(footerContent);
+		   },
+            
+		});
+	});
+</script>

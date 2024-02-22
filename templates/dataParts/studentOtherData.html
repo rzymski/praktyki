@@ -1,0 +1,36 @@
+<div>
+    <h5 class="informationGroupTitle">Pozostałe dane:</h5>
+    <ul class="list-group">
+        {% if details.rspo %}
+            <li class="list-group-item"><span class="informationData">Rspo: </span>{{ details.rspo }}</li>
+        {% endif %}
+        {% if details.matura %}
+            <li class="list-group-item"><span class="informationData">Matura: </span>{{ details.matura }}</li>
+        {% endif %}
+        {% if details.osm_gim %}
+            <li class="list-group-item"><span class="informationData">Osm/gim: </span>{{ details.osm_gim }}</li>
+        {% endif %}
+        {% if details.laptopContract %}
+            <li class="list-group-item"><span class="informationData">Kontrakt na laptopa: </span>{{ details.laptopContract }}</li>
+        {% endif %}
+        {% if details.religion %}
+            <li class="list-group-item">
+                <span class="informationData">Religia:</span>
+                {% if details.religion == 'RK' %}
+                    Religia Katolicka
+                {% elif details.religion == 'RP' %}
+                    Religia Prawosławna
+                {% elif details.religion == 'E' %}  
+                    Etyka
+                {% elif details.religion == '0' %}
+                    Nie uczęszcza
+                {% else %}
+                    {{ details.religion }}
+                {% endif %}
+            </li>
+        {% endif %}
+        {% if details.wdzResignation %}
+            <li class="list-group-item"><span class="informationData">Wdż: </span>{{ details.wdzResignation }}</li>
+        {% endif %}
+    </ul>
+</div>

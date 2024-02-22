@@ -1,0 +1,112 @@
+<script>
+	$(document).ready(function() {
+		$('#teacherListTable thead tr')
+			.clone(true)
+			.addClass('filters')
+			.appendTo('#teacherListTable thead');
+		let teachersDateTable = $('#teacherListTable').DataTable({
+			tableId: 'teachersDateTable',
+			paging: true,
+			pageLength: -1,
+			lengthChange: true,
+			lengthMenu: [[10, 20, 25, 50, 100, -1], [10, 20, 25, 50, 100, 'Wszystkich']],
+			autoWidth: true,
+			searching: true,
+			bInfo: true, //info about number of elements in page
+			bSort: true,
+			orderCellsTop: true,
+			dom: 'lrftip',
+			language: {
+				lengthMenu: "Pokaż _MENU_ nauczycieli",
+				search: "Wyszukiwarka nauczycieli: ",
+				searchPlaceholder: "Szukaj nauczyciela",
+				paginate: {
+					previous: "Poprzednia ",
+					next: "Następna"
+				},
+				info: "Pokazuje _START_ do _END_ z _TOTAL_",
+				infoFiltered: " (wyfiltrowano z _MAX_ wszystkich nauczycieli)",
+				zeroRecords: "Brak pasującyh nauczycieli.",
+				infoEmpty: "Nie znaleziono żadny pasującyh nauczycieli.",
+			},
+			initComplete: function () {
+				let api = this.api();
+				api.columns([0, 1, 2, 3, 4, 5]).eq(0).each(function (colIdx) {
+					let cell = $('.filters th').eq(
+						$(api.column(colIdx).header()).index()
+					);
+					let title = $(cell).text();
+					$(cell).html('<input type="text" placeholder="' + title + '" style="width: 100%; text-align: center;"/>');
+					$(
+						'input',
+						$('.filters th').eq($(api.column(colIdx).header()).index())
+					)
+						.off('keyup change')
+						.on('keyup change', function (e) {
+							e.stopPropagation();
+							$(this).attr('title', $(this).val());
+							let searchTerm = this.value.trim();
+							api.column(colIdx).search(searchTerm, false, false).draw();
+						});
+				});
+			},
+			footerCallback: function (row, data, start, end, display) {
+				let api = this.api();
+				let intVal = function (i) {
+					return typeof i === 'string'
+						? i.replace(/[\$,]/g, '') * 1
+						: typeof i === 'number'
+						? i
+						: 0;
+				};
+				let gradeValues = api.column(4).data();
+				if (gradeValues.length === 0) { return; }
+				let numberOfGrades = api.column(3).data();
+				let gradeSum = 0, gradeNumber = 0;
+				let totalWeightedSum = 0, totalNumberOfGrades = 0;
+				for (let i = 0; i < gradeValues.length; i++) {
+					let grade = intVal(gradeValues[i]);
+					if(grade !== 0){
+						gradeSum += grade;
+						gradeNumber += 1;
+						let number = intVal(numberOfGrades[i]);
+						totalWeightedSum += number * grade;
+						totalNumberOfGrades += number;
+					}
+				}
+				let average = gradeSum / gradeNumber;
+				let averageSingleGrade = totalWeightedSum / totalNumberOfGrades;
+				let pageGradeValues = api.column(4, { page: 'current' }).data();
+				let pageNumberOfGrades = api.column(3, { page: 'current' }).data();
+				let pageGradeSum = 0, pageGradeNumber = 0;
+				let pageTotalWeightedSum = 0, pageTotalNumberOfGrades = 0;
+				for (let i = 0; i < pageGradeValues.length; i++) {
+					let pageGrade = intVal(pageGradeValues[i]);
+					if(pageGrade !== 0){
+						pageGradeSum += pageGrade;
+						pageGradeNumber += 1;
+						let pageNumber = intVal(pageNumberOfGrades[i])
+						pageTotalWeightedSum += pageNumber * pageGrade;
+						pageTotalNumberOfGrades += pageNumber;
+					}
+				}
+				let pageResult = '', pageResult2 = '';
+				let pageAverage, pageSingleGradeAverage;
+				if (pageGradeValues.length !== 0) {
+					pageAverage = pageGradeSum / pageGradeNumber;
+					pageResult = `Średnia wybranych średnich ocen nauczycieli: ${pageAverage.toFixed(3)}`;
+					pageSingleGradeAverage = pageTotalWeightedSum / pageTotalNumberOfGrades;
+					pageResult2 = `Średnia wybranych ocen: ${pageSingleGradeAverage.toFixed(3)}`;
+				}
+				let footerContent = `${pageResult} (Średnia średnich ocen nauczycieli: ${average.toFixed(3)})`;
+				let tableFooter = document.querySelector('table tfoot');
+				let footerRow = tableFooter.querySelector('tr:nth-child(1)');
+				footerRow.querySelector('th').textContent = footerContent;
+				//$(api.row(0).column(0).footer()).html(footerContent);
+				let footerContent2 = `${pageResult2} (Średnia ocen : ${averageSingleGrade.toFixed(3)})`;
+				let footerRow2 = tableFooter.querySelector('tr:nth-child(2)');
+				footerRow2.querySelector('th').textContent = footerContent2;
+			},
+		});
+	});
+</script>

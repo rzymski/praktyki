@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <i class="fa-solid fa-user-graduate" style="color: #fff; margin-right: 1rem"></i>
+        <a class="navbar-brand" href="/">Strona główna</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'studentsList' %}">Lista uczniów</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'teachersList' %}">Lista nauczycieli</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'gradesList' %}">Oceny</a>
+                </li>
+          </ul>
+        </div>
+        
+        <div class="navbar-nav">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a class="nav-item nav-link" href="/admin/">Admin panel</a>
+                {% endif %}
+                <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
+                    {{user.username}} <i class="fas fa-user"></i>
+                </a>
+                <a class="nav-item nav-link" href="{% url 'logout' %}">
+                    Wyloguj się <i class="fas fa-sign-out-alt"></i>
+                </a>
+            {% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">
+                    Zaloguj się <i class="fas fa-sign-in-alt"></i>
+                </a>
+                {% comment %}<a class="nav-item nav-link" href="{% url 'register' %}">
+                    Zarejestruj się <i class="fas fa-user-plus"></i>
+                </a>{% endcomment %}
+            {% endif %}
+        </div>
+    </div>
+</nav>

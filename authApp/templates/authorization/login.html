@@ -1,0 +1,97 @@
+{% extends "partials/base.html" %}
+{% load socialaccount %}
+{% load static %}
+{% block title %}Logowanie{% endblock %}
+{% block content %}
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    </head>
+    <div class="containerLogin">
+        <div class="d-flex justify-content-center h-100">
+            <div id="loginCard" class="card">
+                <div class="card-header">
+                    <h3>Zaloguj się</h3>
+                    <div class="d-flex justify-content-end social_icon">
+                        <a href="{% provider_login_url 'google'%}?next=/">
+                            <span><i class="fab fa-google-plus-square"></i></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            {{ form.username }}
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            {{ form.password }}
+                        </div>
+                        {% comment %}<div class="row align-items-center remember">
+                            <input type="checkbox">Zapamiętaj mnie
+                        </div>{% endcomment %}
+                        {% if request.GET.next %}
+                            <input type="hidden" name="next" value="{{request.GET.next}}" />
+                        {% endif %}
+                        <div class="form-group">
+                            <input type="submit" value="Zaloguj się" class="btn float-right login_btn" style="font-weight: bold">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button onclick="window.location.href='{% provider_login_url 'google' %}?next=/'" type="button" class="btn btn-danger">
+                        <i class="fa-brands fa-google"></i>
+                        <span>Zaloguj się przez Google</span>
+                    </button>
+                    {% comment %}<div class="d-flex justify-content-center links">
+                        Nie masz konta?<a href="{% url 'register' %}">Zarejestruj się</a>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a href="#">Zapomniałeś hasła?</a>
+                    </div>{% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% comment %}
+{% extends "partials/base.html" %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                    {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+
+            <button class="btn btn-outline-info">
+                <a href="{% provider_login_url 'google'%}?next=/">
+                    <i class="fab fa-google"></i>
+                    Login with Google
+                </a>
+            </button>
+
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+            </small><br>
+            <small class="text-muted">
+                <a href="/">Forgot password?</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}{% endcomment %}

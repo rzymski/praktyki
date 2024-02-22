@@ -1,0 +1,12 @@
+{% load myFilters %}
+<div>
+    <h5 class="informationGroupTitle">Dane urodzenia ucznia:</h5>
+    <ul class="list-group">
+        {% if details.birthPlace %}
+            <li class="list-group-item"><span class="informationData">Miejsce urodzenia: </span>{{ details.birthPlace }}</li>
+        {% endif %}
+        {% if details.birthDate %}
+            <li class="list-group-item"><span class="informationData">Data urodzenia: </span>{{ details.birthDate|myDateFormat }}</li>
+        {% endif %}
+    </ul>
+</div>

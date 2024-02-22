@@ -1,0 +1,14 @@
+<div>
+    <h5 class="informationGroupTitle">Egzamin 8-klasisty:</h5>
+    <ul class="list-group">
+        {% if class8Exam.polish %}
+            <li class="list-group-item"><span class="informationData">Polski: </span>{{ class8Exam.polish }}%</li>
+        {% endif %}
+        {% if class8Exam.mathematics %}
+            <li class="list-group-item"><span class="informationData">Matematyka: </span>{{ class8Exam.mathematics }}%</li>
+        {% endif %}
+        {% if class8Exam.english %}
+            <li class="list-group-item"><span class="informationData">Angielski: </span>{{ class8Exam.english }}%</li>
+        {% endif %}
+    </ul>
+</div>

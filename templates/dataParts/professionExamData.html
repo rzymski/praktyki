@@ -1,0 +1,53 @@
+<div>
+    <h5 class="informationGroupTitle">Egzamin zawodowy:</h5>
+    <ul class="list-group">
+        <div class="row">
+            {% if professionExam.inf03_pis_popr %}
+                <div class="col-7" style="padding-right: 0px">
+                    <li class="list-group-item"><span class="informationData">inf03 pisemny poprawka: </span>{{ professionExam.inf03_pis_popr }}%</li>
+                </div>
+            {% endif %}
+            {% if professionExam.inf03_pis %}
+                <div class="col-5" {% if professionExam.inf03_pis_popr  %} style="padding-left: 0px" {% endif %}>
+                    <li class="list-group-item"><span class="informationData">inf03 pisemny: </span>{{ professionExam.inf03_pis }}%</li>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            {% if professionExam.inf03_pr_popr %}
+                <div class="col-7" style="padding-right: 0px">
+                    <li class="list-group-item"><span class="informationData">inf03 praktyczny poprawka: </span>{{ professionExam.inf03_pr_popr }}%</li>
+                </div>
+            {% endif %}
+            {% if professionExam.inf03_pr %}
+                <div class="col-5" {% if professionExam.inf03_pr_popr  %} style="padding-left: 0px" {% endif %}>
+                    <li class="list-group-item"><span class="informationData">inf03 praktyczny: </span>{{ professionExam.inf03_pr }}%</li>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            {% if professionExam.inf04_pis_popr %}
+                <div class="col-7" style="padding-right: 0px">
+                    <li class="list-group-item"><span class="informationData">inf04 pisemny poprawka: </span>{{ professionExam.inf04_pis_popr }}%</li>
+                </div>
+            {% endif %}
+            {% if professionExam.inf04_pis %}
+                <div class="col-5" {% if professionExam.inf04_pis_popr  %} style="padding-left: 0px" {% endif %}>
+                    <li class="list-group-item"><span class="informationData">inf04 pisemny: </span>{{ professionExam.inf04_pis }}%</li>
+                </div>
+            {% endif %}
+        </div>
+        <div class="row">
+            {% if professionExam.inf04_pr_popr %}
+                <div class="col-7" style="padding-right: 0px">
+                    <li class="list-group-item"><span class="informationData">inf04 praktyczny poprawka: </span>{{ professionExam.inf04_pr_popr }}%</li>
+                </div>
+            {% endif %}
+            {% if professionExam.inf04_pr %}
+                <div class="col-5" {% if professionExam.inf04_pr_popr  %} style="padding-left: 0px" {% endif %}>
+                    <li class="list-group-item"><span class="informationData">inf04 praktyczny: </span>{{ professionExam.inf04_pr }}%</li>
+                </div>
+            {% endif %}
+        </div>
+    </ul>
+</div>

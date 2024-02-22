@@ -1,0 +1,60 @@
+{% extends 'partials/base.html' %}
+{% block title %}Lista uczniow{% endblock %}
+{% block content %}
+    <div>
+        <body>
+            <br>
+            <div style="width: 95%; margin: auto">
+                <table id="studentListTable" class="display cell-border" style="width: 100%; text-align: center">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Index</th>
+                            <th>Pesel</th>
+                            <th>Imie</th>
+                            <th>Nazwisko</th>
+                            <th>Klasa</th>
+                            <th>Szkoła</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in students %}
+                            {% comment %}<tr class="clickable-row" data-href="{% url 'test' data.index%}">{% endcomment %}
+                            <tr class="clickable-row" data-href="{% url 'studentDetail' data.index%}">
+                                <td>{{ data.index }}</td>
+                                <td>{{ data.pesel }}</td>
+                                <td>{{ data.name }}</td>
+                                <td>{{ data.surname }}</td>
+                                <td>{{ data.actualClass }}</td>
+                                <td>{{ data.schoolName }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </body>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll(".clickable-row");
+            rows.forEach(function (row) {
+                row.addEventListener("click", function () {
+                    const url = row.getAttribute("data-href");
+                    window.location.href = url;
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% comment %}{% block navbar %}
+    {% block searchNavbar %}
+        <div class="d-flex" style="margin-right: 25px">
+            <div class="input-group input-group-sm">
+                <input class="form-control" type="search" id="search" placeholder="Wyszukiwarka wszystkiego" aria-label="Search">
+                <a href="{% url 'studentsList' %}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-sync-alt"></i>
+                </a>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}{% endcomment %}

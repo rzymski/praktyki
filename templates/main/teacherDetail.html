@@ -1,0 +1,34 @@
+{% extends 'partials/base.html' %}
+{% load myFilters %}
+{% block title %}Dane nauczyciela{% endblock %}
+{% block content %}
+    <h1 style="text-align: center">{{ teacher.name }} {{ teacher.surname }}</h1>
+    <div style="width: 95%; margin: auto">
+        <table id="teacherGradesTable" class="display cell-border" style="width: 100%; text-align: center">
+            <thead class="table-success">
+                <tr>
+                    <th>Nazwa przedmiotu</th>
+                    <th>Semestr</th>
+                    <th>Ocena (wartość)</th>
+                    <th>Liczba wystawionych ocen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in gradesBySubject %}
+                    <tr>
+                        <td>{{ entry.name }}</td>
+                        <td>{{ entry.gradesubjectleader__grade__semester }}</td> 
+                        <td>{{ entry.gradesubjectleader__grade__gradeValue }}</td> 
+                        <td>{{ entry.grades_count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="4" style="text-align: center"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+{% endblock %}

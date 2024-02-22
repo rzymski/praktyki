@@ -1,0 +1,32 @@
+<div>
+    <h5 class="informationGroupTitle">Matura:</h5>
+    <ul class="list-group">
+        {% if matura.polishSpeakingExam %}
+            <li class="list-group-item"><span class="informationData">Polski ustny: </span>{{ matura.polishSpeakingExam }}%</li>
+        {% endif %}
+        {% if matura.englishSpeakingExam %}
+            <li class="list-group-item"><span class="informationData">Angielski ustny: </span>{{ matura.englishSpeakingExam }}%</li>
+        {% endif %}
+        {% if matura.polishBasic %}
+            <li class="list-group-item"><span class="informationData">Polski podstawowy: </span>{{ matura.polishBasic }}%</li>
+        {% endif %}
+        {% if matura.englishBasic %}
+            <li class="list-group-item"><span class="informationData">Angielski podstawowy: </span>{{ matura.englishBasic }}%</li>
+        {% endif %}
+        {% if matura.mathematicsBasic %}
+            <li class="list-group-item"><span class="informationData">Matematyka podstawowa: </span>{{ matura.mathematicsBasic }}%</li>
+        {% endif %}
+        {% if matura.englishExtended %}
+            <li class="list-group-item"><span class="informationData">Angielski rozszerzony: </span>{{ matura.englishExtended }}%</li>
+        {% endif %}
+        {% if matura.mathematicsExtended %}
+            <li class="list-group-item"><span class="informationData">Matematyka rozszerzona: </span>{{ matura.mathematicsExtended }}%</li>
+        {% endif %}
+        {% if matura.computerScienceExtended %}
+            <li class="list-group-item"><span class="informationData">Informatyka rozszerzony: </span>{{ matura.computerScienceExtended }}</li>
+        {% endif %}
+        {% if matura.historyExtended %}
+            <li class="list-group-item"><span class="informationData">Historia rozszerzona: </span>{{ matura.historyExtended }}</li>
+        {% endif %}
+    </ul>
+</div>

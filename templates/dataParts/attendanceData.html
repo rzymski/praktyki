@@ -1,0 +1,8 @@
+<div>
+    <h5 class="informationGroupTitle">Semestr {{ semester }}</h5>
+    <ul class="list-group">
+        <li class="list-group-item"><span class="informationData">Usprawiedliowione obecności: </span>{% if a.legitimate or a.legitimate == 0 %}{{ a.legitimate }}{% endif %}</li>
+        <li class="list-group-item"><span class="informationData">Nieusprawiedliowione obecności: </span>{% if a.illegitimate or a.illegitimate == 0  %}{{ a.illegitimate }}{% endif %}</li>
+        <li class="list-group-item"><span class="informationData">Spóźnienia: </span>{% if a.lateAttendance or a.lateAttendance == 0 %}{{ a.lateAttendance}}{% endif %}</li>
+    </ul>
+</div>

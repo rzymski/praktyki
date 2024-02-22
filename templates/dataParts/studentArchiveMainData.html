@@ -1,0 +1,36 @@
+{% load myFilters %}
+<div>
+    <h5 class="informationGroupTitle">Archiwalne dane główne studenta:</h5>
+    <ul class="list-group">
+        {% if studentArchive.index.index %}
+            <li class="list-group-item"><span class="informationData">Index: </span>{{ studentArchive.index.index }}</li>
+        {% endif %}
+        {% if studentArchive.pesel %}
+            <li class="list-group-item"><span class="informationData">Pesel: </span>{{ studentArchive.pesel }}</li>
+        {% endif %}
+        {% if studentArchive.name %}
+            <li class="list-group-item"><span class="informationData">Imie: </span>{{ studentArchive.name }}</li>
+        {% endif %}
+        {% if studentArchive.secondName %}
+            <li class="list-group-item"><span class="informationData">Drugie imie: </span>{{ studentArchive.secondName }}</li>
+        {% endif %}
+        {% if studentArchive.surname %}
+            <li class="list-group-item"><span class="informationData">Nazwisko: </span>{{ studentArchive.surname }}</li>
+        {% endif %}
+        {% if studentArchive.sex %}
+            <li class="list-group-item"><span class="informationData">Płeć: </span>{% if studentArchive.sex == 'M' %} Mężczyzna {% elif studentArchive.sex == 'K' %} Kobieta {% endif %}</li>
+        {% endif %}
+        {% if studentArchive.status %}
+            <li class="list-group-item"><span class="informationData">Status: </span>{{ studentArchive.status }}</li>
+        {% endif %}
+        {% if studentArchive.specialization %}
+            <li class="list-group-item"><span class="informationData">Specjalizacja: </span>{{ studentArchive.specialization }}</li>
+        {% endif %}
+        {% if studentArchive.schoolClass and studentArchive.schoolClass.actualClass %}
+            <li class="list-group-item"><span class="informationData">Aktualna klasa: </span>{{ schoolClass.actualClass }}</li>
+        {% endif %}
+    </ul>
+    {% if studentArchive.actualizationDate %}
+        <li class="list-group-item"><span class="informationData">Data aktualizacji danych: </span>{{ studentArchive.actualizationDate|myDateFormat }}</li>
+    {% endif %}
+</div>

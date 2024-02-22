@@ -1,0 +1,27 @@
+<div>
+    <div style="width: 95%; margin: auto">
+        <table id="studentGradesTable" class="display cell-border" style="width: 100%; text-align: center">
+            <thead class="table-success">
+                <tr>
+                    <th>Nazwa przedmiotu</th>
+                    <th>Semestr</th>
+                    <th>Ocena</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grade in gradesQuery %}
+                    <tr>
+                        <td>{{ grade.gradesubjectleader__subject__name }}</td>
+                        <td>{{ grade.semester }}</td>
+                        <td>{{ grade.gradeValue }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align: center"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

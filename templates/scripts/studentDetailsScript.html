@@ -1,0 +1,373 @@
+<script>
+	Chart.register(ChartDataLabels);
+	let config = {
+		type: 'radar',
+		data: null,
+		options: {
+			aspectRatio: 1.5,
+			elements: {
+				line: {
+					borderWidth: 3
+				}
+			},
+			scales: {
+				r: {
+					min: 0,
+					max: 100,
+					ticks: {
+						stepSize: 10,
+						callback: function (value) {
+							{% comment %}if (value % 20 === 0) { return value + '%';
+							} else { return ''; }{% endcomment %}
+							return '';
+						}
+					},
+					pointLabels :{
+						font: {
+							size: 12,
+							weight: "bold",
+						}
+					},
+				},
+			},
+			plugins: {
+				datalabels: {
+					formatter: function(value, context) {
+						return context.chart.data.labels[context.value];
+					},
+					opacity: 1,
+					color: 'white',
+					borderColor: '#ff0000',
+					borderWidth: 2,
+					borderRadius: 100,
+					font: {
+						weight: 'bold',
+						size: 14,
+						lineHeight: 1,
+					},
+					backgroundColor: function(context) {
+						return context.hovered ? context.dataset.borderColor : 'white';
+					},
+					color: function(context) {
+						return context.hovered ? 'white' : context.dataset.borderColor;
+					},
+					listeners: {
+						enter: function(context) {
+							context.hovered = true;
+							return true;
+						},
+						leave: function(context) {
+							context.hovered = false;
+							return true;
+						}
+					}
+				},
+				tooltip: {
+					enabled: true,
+					position: 'average',
+					callbacks: {
+						label: function (context) {
+							//console.log("L=", context)
+							return '';
+							//return `${context.label}: ${context.formattedValue}`;
+						},
+						title: function (context) {
+							//console.log("T=", context)
+							//return '';
+							return `${context[0].label}: ${context[0].formattedValue}`;
+						},
+					}
+				}
+				
+			},
+		},
+	};
+	{% for juniorExam in juniorExams %}
+		let juniorExamCanvas{{ forloop.counter }} = document.getElementById('juniorExamChart{{ forloop.counter }}');
+		let dataValues{{ forloop.counter }} = [{{ juniorExam.polish }}, {{ juniorExam.historyAndWos }}, {{ juniorExam.mathematics }}, {{ juniorExam.naturalScience }}, {{ juniorExam.foreignLanguageBasic }}, {{ juniorExam.foreignLanguageExtend }}];
+		let data{{ forloop.counter }} = {
+			labels: ['Język polski', 'Historia i WOS', 'Matematyka', 'Przyroda', 'Język obcy podstawowy', 'Język obcy rozszerzony'],
+			datasets: [{
+				label: 'Egzamin gimnazjalny',
+				data: dataValues{{ forloop.counter }},
+				fill: true,
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgb(255, 99, 132)',
+				pointBackgroundColor: 'rgb(255, 99, 132)',
+				pointBorderColor: '#fff',
+				pointHoverBackgroundColor: '#fff',
+				pointHoverBorderColor: 'rgb(255, 99, 132)'
+			}]
+		};
+		let juniorExamConfig{{ forloop.counter }} = {...config}
+		juniorExamConfig{{ forloop.counter }}.data = data{{ forloop.counter }}
+		let juniorExamChart{{ forloop.counter }} = new Chart(juniorExamCanvas{{ forloop.counter }}, juniorExamConfig{{ forloop.counter }});
+	{% endfor %}
+	
+	{% for class8Exam in class8Exams %}
+		let class8ExamCanvas{{ forloop.counter }} = document.getElementById('class8ExamChart{{ forloop.counter }}');
+		let dataValues{{ forloop.counter }} = [{{ class8Exam.polish }}, {{ class8Exam.mathematics }},  {{ class8Exam.english }}];
+		let data{{ forloop.counter }} = {
+			labels: ['Język polski', 'Matematyka', 'Język Angielski'],
+			datasets: [{
+				label: 'Egzamin gimnazjalny',
+				data: dataValues{{ forloop.counter }},
+				fill: true,
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgb(255, 99, 132)',
+				pointBackgroundColor: 'rgb(255, 99, 132)',
+				pointBorderColor: '#fff',
+				pointHoverBackgroundColor: '#fff',
+				pointHoverBorderColor: 'rgb(255, 99, 132)'
+			}]
+		};
+		let class8ExamConfig{{ forloop.counter }} = {...config}
+		class8ExamConfig{{ forloop.counter }}.data = data{{ forloop.counter }}
+		let class8ExamChart{{ forloop.counter }} = new Chart(class8ExamCanvas{{ forloop.counter }}, class8ExamConfig{{ forloop.counter }});
+	{% endfor %}
+	
+	{% for matura in maturaExams %}
+		let maturaExamCanvas{{ forloop.counter }} = document.getElementById('maturaExamChart{{ forloop.counter }}');
+		let maturaDataValues{{ forloop.counter }} = [
+			{{ matura.polishSpeakingExam|default:"null" }},
+			{{ matura.englishSpeakingExam|default:"null" }},
+			{{ matura.polishBasic|default:"null" }},
+			{{ matura.englishBasic|default:"null" }},
+			{{ matura.mathematicsBasic|default:"null" }},
+			{{ matura.englishExtended|default:"null" }},
+			{{ matura.mathematicsExtended|default:"null" }},
+			{{ matura.computerScienceExtended|default:"null" }},
+			{{ matura.historyExtended|default:"null" }}
+		];
+		let maturaLabels{{ forloop.counter }} = ['Język polski ustny', 'Język angielski ustny', 'Język polski podstawowy', 'Język angielski podstawowy', 'Matematyka podstawowa', 'Język angielski rozszerzony', 'Matematyka rozszerzona', 'Informatyka rozszerzona', 'Historia rozszerzona'];
+		let filteredMaturaDataValues{{ forloop.counter }} = [];
+		let filteredMaturaLabels{{ forloop.counter }} = [];
+		for (let i = 0; i < maturaDataValues{{ forloop.counter }}.length; i++) {
+			if (maturaDataValues{{ forloop.counter }}[i] !== null) {
+				filteredMaturaDataValues{{ forloop.counter }}.push(maturaDataValues{{ forloop.counter }}[i]);
+				filteredMaturaLabels{{ forloop.counter }}.push(maturaLabels{{ forloop.counter }}[i]);
+			}
+		}
+		let maturaData{{ forloop.counter }} = {
+			labels: filteredMaturaLabels{{ forloop.counter }},//['Język polski ustny', 'Język angielski ustny', 'Język polski podstawowy', 'Język angielski podstawowy', 'Matematyka podstawowa', 'Język angielski rozszerzony', 'Matematyka rozszerzona', 'Informatyka rozszerzona', 'Historia rozszerzona'],
+			datasets: [{
+				label: 'Matura',
+				data: filteredMaturaDataValues{{ forloop.counter }},
+				fill: true,
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgb(255, 99, 132)',
+				pointBackgroundColor: 'rgb(255, 99, 132)',
+				pointBorderColor: '#fff',
+				pointHoverBackgroundColor: '#fff',
+				pointHoverBorderColor: 'rgb(255, 99, 132)'
+			}]
+		};
+		let maturaConfig{{ forloop.counter }} = {...config}
+		maturaConfig{{ forloop.counter }}.data = maturaData{{ forloop.counter }}
+		let maturaExamChart{{ forloop.counter }} = new Chart(maturaExamCanvas{{ forloop.counter }}, maturaConfig{{ forloop.counter }});
+	{% endfor %}
+
+	{% for professionExam in professionExams %}
+		let professionExamCanvas{{ forloop.counter }} = document.getElementById('professionExamChart{{ forloop.counter }}');
+		let professionExamDataValues{{ forloop.counter }} = [
+			{{ professionExam.inf03_pis|default:"null" }},
+			{{ professionExam.inf03_pis_popr|default:"null" }},
+			{{ professionExam.inf03_pr|default:"null" }},
+			{{ professionExam.inf03_pr_popr|default:"null" }},
+			{{ professionExam.inf04_pis|default:"null" }},
+			{{ professionExam.inf04_pis_popr|default:"null" }},
+			{{ professionExam.inf04_pr|default:"null" }},
+			{{ professionExam.inf04_pr_popr|default:"null" }},
+		];
+		let professionExamLabels{{ forloop.counter }} = ['Inf03 pisemny', 'Inf03 pisemny poprawka', 'Inf03 praktyczny', 'Inf03 praktyczny poprawka', 'Inf04 pisemny', 'Inf04 pisemny poprawka', 'Inf04 praktyczny', 'Inf04 praktyczny poprawka',];
+		let filteredProfessionExamDataValues{{ forloop.counter }} = [];
+		let filteredProfessionExamLabels{{ forloop.counter }} = [];
+		for (let i = 0; i < professionExamDataValues{{ forloop.counter }}.length; i++) {
+			if (professionExamDataValues{{ forloop.counter }}[i] !== null) {
+				filteredProfessionExamDataValues{{ forloop.counter }}.push(professionExamDataValues{{ forloop.counter }}[i]);
+				filteredProfessionExamLabels{{ forloop.counter }}.push(professionExamLabels{{ forloop.counter }}[i]);
+			}
+		}
+		let professionExamData{{ forloop.counter }} = {
+			labels: filteredProfessionExamLabels{{ forloop.counter }},
+			datasets: [{
+				label: 'Egzamin zawodowy',
+				data: filteredProfessionExamDataValues{{ forloop.counter }},
+				fill: true,
+				backgroundColor: 'rgba(255, 99, 132, 0.2)',
+				borderColor: 'rgb(255, 99, 132)',
+				pointBackgroundColor: 'rgb(255, 99, 132)',
+				pointBorderColor: '#fff',
+				pointHoverBackgroundColor: '#fff',
+				pointHoverBorderColor: 'rgb(255, 99, 132)'
+			}]
+		};
+		let professionExamConfig{{ forloop.counter }} = {...config}
+		professionExamConfig{{ forloop.counter }}.data = professionExamData{{ forloop.counter }}
+		let professionExamChart{{ forloop.counter }} = new Chart(professionExamCanvas{{ forloop.counter }}, professionExamConfig{{ forloop.counter }});
+	{% endfor %}
+
+	$(document).ready(function() {
+		$('#studentGradesTable thead tr')
+			.clone(true)
+			.addClass('filters')
+			.appendTo('#studentGradesTable thead');
+		let studentGradesDateTable = $('#studentGradesTable').DataTable({
+			tableId: 'studentGradesDateTable',
+			paging: true,
+			pageLength: -1,
+			lengthChange: true,
+			lengthMenu: [[10, 20, 25, 50, 100, -1], [10, 20, 25, 50, 100, 'Wszystkie']],
+			autoWidth: true,
+			searching: true,
+			bInfo: true,
+			bSort: true,
+			orderCellsTop: true,
+			dom: 'lrftip',
+			language: {
+				lengthMenu: "Pokaż _MENU_ rekordy",
+				search: "Wyszukiwarka: ",
+				searchPlaceholder: "Szukaj",
+				paginate: {
+					previous: "Poprzednia ",
+					next: "Następna"
+				},
+				info: "Pokazuje _START_ do _END_ z _TOTAL_",
+				infoFiltered: " (wyfiltrowano z _MAX_ wszystkich rekordów)",
+				zeroRecords: "Brak pasującyh rekordów.",
+				infoEmpty: "Nie znaleziono żadny pasującyh rekordów.",
+			},
+			initComplete: function () {
+				let api = this.api();
+				api.columns([0, 1, 2]).eq(0).each(function (colIdx) {
+					let cell = $('.filters th').eq(
+						$(api.column(colIdx).header()).index()
+					);
+					let title = $(cell).text();
+					$(cell).html('<input type="text" placeholder="' + title + '" style="width: 100%; text-align: center;"/>');
+					$(
+						'input',
+						$('.filters th').eq($(api.column(colIdx).header()).index())
+					)
+						.off('keyup change')
+						.on('keyup change', function (e) {
+							e.stopPropagation();
+							$(this).attr('title', $(this).val());
+							let searchTerm = this.value.trim();
+							api.column(colIdx).search(searchTerm, false, false).draw();
+						});
+				});
+			},
+			footerCallback: function (row, data, start, end, display) {
+				let api = this.api();
+				let intVal = function (i) {
+					return typeof i === 'string'
+						? i.replace(/[\$,]/g, '') * 1
+						: typeof i === 'number'
+						? i
+						: 0;
+				};
+				let gradeValues = api.column(2).data();
+				if (gradeValues.length === 0) { return; }
+				let gradeSum = 0;
+				for (let i = 0; i < gradeValues.length; i++) {
+					let grade = intVal(gradeValues[i]);
+					gradeSum += grade;
+				}
+				let average = gradeSum / gradeValues.length;
+				let pageGradeValues = api.column(2, { page: 'current' }).data();
+				let pageGradeSum = 0;
+				for (let i = 0; i < pageGradeValues.length; i++) {
+					let pageGrade = intVal(pageGradeValues[i]);
+					pageGradeSum += pageGrade;
+				}
+				let pageResult = ''
+				let pageAverage;
+				if (pageGradeValues.length !== 0) {
+					pageAverage = pageGradeSum / pageGradeValues.length;
+					pageResult = `Średnia wybranych ocen: ${pageAverage.toFixed(3)}`
+				}
+				let student = `{{ student.name }} {{ student.surname }}`
+				let footerContent = `${pageResult} (Średnia wszystkich ocen ${student}: ${average.toFixed(3)})`;
+				$(api.column(0).footer()).html(footerContent);
+		   },
+		});
+		
+		$('#studentAttendanceTable thead tr')
+			.clone(true)
+			.addClass('filters2')
+			.appendTo('#studentAttendanceTable thead');
+		let studentAttendanceDateTable = $('#studentAttendanceTable').DataTable({
+			tableId: 'studentAttendanceDateTable',
+			paging: true,
+			pageLength: -1,
+			lengthChange: true,
+			lengthMenu: [[10, 20, 25, 50, 100, -1], [10, 20, 25, 50, 100, 'Wszystkie']],
+			autoWidth: true,
+			searching: true,
+			bInfo: true,
+			bSort: true,
+			orderCellsTop: true,
+			dom: 'lrftip',
+			language: {
+				lengthMenu: "Pokaż _MENU_ rekordy",
+				search: "Wyszukiwarka: ",
+				searchPlaceholder: "Szukaj",
+				paginate: {
+					previous: "Poprzednia ",
+					next: "Następna"
+				},
+				info: "Pokazuje _START_ do _END_ z _TOTAL_",
+				infoFiltered: " (wyfiltrowano z _MAX_ wszystkich rekordów)",
+				zeroRecords: "Brak pasującyh rekordów.",
+				infoEmpty: "Nie znaleziono żadny pasującyh rekordów.",
+			},
+			initComplete: function () {
+				let api2 = this.api();
+				api2.columns([0, 1, 2, 3]).eq(0).each(function (colIdx) {
+					let cell = $('.filters2 th').eq(
+						$(api2.column(colIdx).header()).index()
+					);
+					let title = $(cell).text();
+					$(cell).html('<input type="text" placeholder="' + title + '" style="width: 100%; text-align: center;"/>');
+					$(
+						'input',
+						$('.filters2 th').eq($(api2.column(colIdx).header()).index())
+					)
+						.off('keyup change')
+						.on('keyup change', function (e) {
+							e.stopPropagation();
+							$(this).attr('title', $(this).val());
+							let searchTerm = this.value.trim();
+							api2.column(colIdx).search(searchTerm, false, false).draw();
+						});
+				});
+			},
+            
+            footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+                let firstCellValue = ''
+                api.columns().eq(0).each(function (colIdx) {
+                    if (colIdx > 0) {
+                        let columnData = api
+                            .column(colIdx, { search: 'applied' })
+                            .data()
+                            .map(parseFloat);
+                        let total = columnData.reduce(function (a, b) {
+                            return a + b;
+                        }, 0);
+                        let result = ''
+                        if(columnData.length !== 0){
+                            let avg = total / columnData.length;
+                            result = avg.toFixed(3)
+                            firstCellValue = 'Średnia'
+                        }
+                        $(api.column(colIdx).footer()).html(result);
+                    }
+                });
+                $(api.column(0).footer()).html(firstCellValue);
+            },
+            
+		});
+	});
+</script>

@@ -1,0 +1,11 @@
+<div>
+    <h5 class="informationGroupTitle">Dane kontaktowe ucznia:</h5>
+    <ul class="list-group">
+        {% if details.email %}
+            <li class="list-group-item"><span class="informationData">Email: </span>{{ details.email }}</li>
+        {% endif %}
+        {% if details.phone %}
+            <li class="list-group-item"><span class="informationData">Telefon: </span>{{ details.phone }}</li>
+        {% endif %}
+    </ul>
+</div>

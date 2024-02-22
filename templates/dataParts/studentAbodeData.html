@@ -1,0 +1,20 @@
+<div>
+    <h5 class="informationGroupTitle">Miejsce zamieszkania ucznia:</h5>
+    <ul class="list-group">
+        {% if details.town %}
+            <li class="list-group-item"><span class="informationData">Miejsce zamieszkania: </span>{{ details.town }}</li>
+        {% endif %}
+        {% if details.street %}
+            <li class="list-group-item"><span class="informationData">Ulica: </span>{{ details.street }}</li>
+        {% endif %}
+        {% if details.houseNumber %}
+            <li class="list-group-item"><span class="informationData">Numer domu: </span>{{ details.houseNumber }}</li>
+        {% endif %}
+        {% if details.apartmentNumber %}
+            <li class="list-group-item"><span class="informationData">Numer mieszkania: </span>{{ details.apartmentNumber }}</li>
+        {% endif %}
+        {% if details.zipCode %}
+            <li class="list-group-item"><span class="informationData">Kod zip: </span>{{ details.zipCode }}</li>
+        {% endif %}
+    </ul>
+</div>

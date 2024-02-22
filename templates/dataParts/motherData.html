@@ -1,0 +1,9 @@
+<div>
+    <h5 class="informationGroupTitle">Dane matki:</h5>
+    <ul class="list-group">
+        <li class="list-group-item"><span class="informationData">Imie: </span>{% if details.motherName %}{{ details.motherName }}{% endif %}</li>
+        <li class="list-group-item"><span class="informationData">Nazwisko: </span>{% if details.motherSurname %}{{ details.motherSurname }}{% endif %}</li>
+        <li class="list-group-item"><span class="informationData">Email: </span>{% if details.motherEmail %}{{ details.motherEmail }}{% endif %}</li>
+        <li class="list-group-item"><span class="informationData">Telefon: </span>{% if details.motherPhone %}{{ details.motherPhone }}{% endif %}</li>
+    </ul>
+</div>

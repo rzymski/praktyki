@@ -1,0 +1,23 @@
+<div>
+    <h5 class="informationGroupTitle">Egzamin gimnazjalny:</h5>
+    <ul class="list-group">
+        {% if juniorExam.polish %}
+            <li class="list-group-item"><span class="informationData">Polski: </span>{{ juniorExam.polish }}%</li>
+        {% endif %}
+        {% if juniorExam.historyAndWos %}
+            <li class="list-group-item"><span class="informationData">Historia i Wos: </span>{{ juniorExam.historyAndWos }}%</li>
+        {% endif %}
+        {% if juniorExam.mathematics %}
+            <li class="list-group-item"><span class="informationData">Matematyka: </span>{{ juniorExam.mathematics }}%</li>
+        {% endif %}
+        {% if juniorExam.naturalScience %}
+            <li class="list-group-item"><span class="informationData">Przyroda: </span>{{ juniorExam.naturalScience }}%</li>
+        {% endif %}
+        {% if juniorExam.foreignLanguageBasic %}
+            <li class="list-group-item"><span class="informationData">Język obcy podstawowy: </span>{{ juniorExam.foreignLanguageBasic }}%</li>
+        {% endif %}
+        {% if juniorExam.foreignLanguageExtend %}
+            <li class="list-group-item"><span class="informationData">Język obcy rozszerzony: </span>{{ juniorExam.foreignLanguageExtend }}%</li>
+        {% endif %}
+    </ul>
+</div>

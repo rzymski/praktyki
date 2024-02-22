@@ -1,0 +1,66 @@
+<script>
+   $(document).ready(function() {
+       $('#studentListTable thead tr')
+           .clone(true)
+           .addClass('filters')
+           .appendTo('#studentListTable thead');
+
+       let studentsDateTable = $('#studentListTable').DataTable({
+           tableId: 'studentsDateTable',
+           paging: true,
+           pageLength: -1,
+           lengthChange: true,
+           lengthMenu: [[10, 20, 25, 50, 100, -1], [10, 20, 25, 50, 100, 'Wszystkich']],
+           autoWidth: true,
+           searching: true,
+           bInfo: true, //info about number of elements in page
+           bSort: true,
+           orderCellsTop: true,
+           dom: 'lrftip',
+           
+           //fixedHeader: true,
+           //responsive: true,
+           
+           language: {
+                lengthMenu: "Pokaż _MENU_ uczniów",
+                search: "Wyszukiwarka uczniów: ",
+                searchPlaceholder: "Szukaj ucznia",
+                paginate: {
+                    previous: "Poprzednia ",
+                    next: "Następna"
+                },
+                info: "Pokazuje _START_ do _END_ z _TOTAL_",
+                infoFiltered: " (wyfiltrowano z _MAX_ wszystkich uczniów)",
+                zeroRecords: "Brak pasującyh uczniów.",
+                infoEmpty: "Nie znaleziono żadny pasującyh uczniów.",
+            },
+
+           initComplete: function () {
+               let api = this.api();
+               api.columns([0, 1, 2, 3, 4, 5]).eq(0).each(function (colIdx) {
+                   let cell = $('.filters th').eq(
+                       $(api.column(colIdx).header()).index()
+                   );
+                   let title = $(cell).text();
+                   $(cell).html('<input type="text" placeholder="' + title + '" style="width: 100%; text-align: center;"/>');
+                   $(
+                       'input',
+                       $('.filters th').eq($(api.column(colIdx).header()).index())
+                   )
+                       .off('keyup change')
+                       .on('keyup change', function (e) {
+                           e.stopPropagation();
+                           $(this).attr('title', $(this).val());
+                           let searchTerm = this.value.trim();
+                           api.column(colIdx).search(searchTerm, false, false).draw();
+                       });
+               });
+           },
+       });
+       
+       {% comment %}var newSearch = $("#search");
+       newSearch.keyup(function(){
+           table.search($(this).val()).draw();
+       });{% endcomment %}
+   });
+</script>
