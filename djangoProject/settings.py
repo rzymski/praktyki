@@ -65,10 +65,6 @@ SOCIALACCOUNT_PROVIDERS = {
             'profile',
             'email',
         ],
-        # 'APP': {
-        #     'client_id': os.environ['CLIENT_ID'],
-        #     'secret': os.environ['CLIENT_SECRET'],
-        # },
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
@@ -117,18 +113,18 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'analiza',
-        'USER': 'rzymski',
-        'PASSWORD': 'admin123',
-        'HOST': '10.192.192.104',
-        'PORT': '3306'
-    },
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'analiza',
+    #     'USER': 'rzymski',
+    #     'PASSWORD': 'admin123',
+    #     'HOST': '10.192.192.104',
+    #     'PORT': '3306'
+    # },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -172,7 +168,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'authApp/static'),
     os.path.join(BASE_DIR, 'schoolApp/static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
