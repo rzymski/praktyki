@@ -1,8 +1,64 @@
 {% extends 'partials/base.html' %}
 {% block title %}Index page{% endblock %}
 {% block content %}
-    <div>
-        Strona główna
+    <style>
+        .linksWithoutUnderline {
+            text-decoration: none !important;
+        }
+        .cards-margin {
+            width: 95%;
+            margin: 2rem auto auto;
+        }
+        .cards-padding {
+            padding: 1rem;
+        }
+        .custom-icon {
+            width: 100%;
+            font-size: 10rem;
+            text-align: center;
+            color: black;
+        }
+    </style>
+    <div class="card-group cards-margin">
+        <div class="card cards-padding">
+            <a href="{% url 'studentsList' %}" class="linksWithoutUnderline">
+                <i class="fas fa-user custom-icon"></i>
+                <div class="card-body">
+                    <h5 class="card-title" style="text-align: center; font-size: 2rem;">Lista uczniów</h5>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Strona zawiera listę wszystkich uczniów. <br>Tabela z listą uczniów składa się z kolumn zawierających index ucznia, peselu, imienia, nazwiska, klasy
+                            oraz nazwy szkoły do której uczęszcza uczeń.
+                    </small></p>
+                </div>
+            </a>
+        </div>
+        <div class="card cards-padding">
+            <a href="{% url 'teachersList' %}"  class="linksWithoutUnderline">
+                <i class="fas fa-user-graduate custom-icon"></i>
+                <div class="card-body">
+                    <h5 class="card-title" style="text-align: center; font-size: 2rem;">Lista nauczycieli</h5>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Strona zawiera listę wszystkich nauczycieli. <br>Tabela z listą nauczycieli składa się z kolumn zawierających id nauczyciela, nazwiska, imienia, liczby wystawionych ocen przez danego nauczyciela,
+                            średniej wystawianych ocen oraz informacji czy dany nauczyciel jest pedagogiem lub psychologiem. <br>Tabela zawiera w podsumowaniu średnią średnich ocen wystawionych przez nauczycieli oraz średnią wszystkich ocen.
+                        </small></p>
+                </div>
+            </a>
+        </div>
+        <div class="card cards-padding">
+            <a href="{% url 'gradesList' %}"  class="linksWithoutUnderline">
+{#                <img src="..." class="card-img-top" alt="...">#}
+                <i class="fas fa-award custom-icon"></i>
+                <div class="card-body">
+                    <h5 class="card-title" style="text-align: center; font-size: 2rem;">Oceny</h5>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Strona zawiera oceny śródroczne i końcoworoczne wystawione przez danych nauczycieli z danych przedmiótów. <br>Tabela z ocenami składa się z kolumn zawierających nazwę przedmiotu, imienia i nazwiska nauczyciela,
+                            rodzaju oceny (śródroczna lub końcoworoczna), ilości wystawionych ocen (osobno dla kazdej wartości ocen) oraz średniej ocen. <br>Tabela zawiera w podsumowaniu średnią śrenich ocen.
+                        </small></p>
+                </div>
+            </a>
+        </div>
     </div>
-    <a href="{% url 'test' %}">Strona testowa</a>
 {% endblock %}
